@@ -23,7 +23,7 @@ function startGame() {
     myDownBtn = new component(30, 30, "blue", 50, 70);    
     myLeftBtn = new component(30, 30, "blue", 20, 40);    
     myRightBtn = new component(30, 30, "blue", 80, 40); 
-    myGoldPiece = new component(10, 10, "yellow", 300, 120);
+    myGoldPiece = new component(10, 10, "images/entities/coin.png", 300, 120, "image");
     myScore = new component("30px", "Consolas", "black", 280, 40, "text");
     myGameArea.start();
 }
@@ -68,6 +68,10 @@ var myGameArea = {
 function component(width, height, color, x, y, type) {
     this.gamearea = myGameArea;
     this.type = type;
+    if (type == "image") {
+        this.image = new Image();
+        this.image.src = color;
+    }
     this.width = width;
     this.height = height;
     this.speedX = 0;
@@ -76,7 +80,12 @@ function component(width, height, color, x, y, type) {
     this.y = y;    
     this.update = function() {
         ctx = myGameArea.context;
-        if (this.type == "text") {
+        if (type == "image") {
+            ctx.drawImage(this.image,
+            this.x,
+            this.y,
+            this.width, this.height);
+        } else if (this.type == "text") {
             ctx.font = this.width + " " + this.height;
             ctx.fillStyle = color;
             ctx.fillText(this.text, this.x, this.y);
