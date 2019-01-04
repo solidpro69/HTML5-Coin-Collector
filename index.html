@@ -16,6 +16,9 @@ var myGamePiece;
 var myGoldPiece;
 var myMoney = 0;
 var myScore;
+var upgradeSpeed;
+var speedCost = 10;
+var mySpeed = 1;
 
 function startGame() {
     myGamePiece = new component(30, 30, "red", 10, 120);
@@ -25,6 +28,7 @@ function startGame() {
     myRightBtn = new component(30, 30, "blue", 80, 40); 
     myGoldPiece = new component(10, 10, "images/entities/coin.png", 300, 120, "image");
     myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+    upgradeSpeed = new component("10px", "Consolas", "black", 20, 250, "text");
     myGameArea.start();
 }
 
@@ -35,7 +39,7 @@ var myGameArea = {
         this.canvas.height = 270;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea, 20);
+        this.interval = setInterval(updateGameArea, 20 - mySpeed);
         window.addEventListener('mousedown', function (e) {
             myGameArea.x = e.pageX;
             myGameArea.y = e.pageY;
@@ -162,6 +166,14 @@ function updateGameArea() {
         myMoney++;}
     myScore.text = "SCORE: " + myMoney;
     myScore.update();
+    upgradeSpeed.text = "Upgrade Speed: " + speedCost;
+    if (upgradeSpeed.clicked() && myMoney >= speedCost) {
+            mySpeed += 1;
+            setInterval(updateGameArea, 20 - mySpeed);
+            myMoney = myMoney - speedCost;
+            speedCost = speedCost*mySpeed;
+        }
+    upgradeSpeed.update();
     myGoldPiece.update();
     myGamePiece.newPos();    
     myGamePiece.update();
