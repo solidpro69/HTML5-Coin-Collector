@@ -111,8 +111,36 @@ function component(width, height, color, x, y, type) {
     }
     this.newPos = function() {
         this.x += this.speedX;
-        this.y += this.speedY;        
-    }   
+        this.y += this.speedY;
+        this.hitTop();
+        this.hitBottom();
+        this.hitLeft();
+        this.hitRight();
+    }
+    this.hitTop = function() {
+        var rocktop = 0;
+        if (this.y < rocktop) {
+            this.y = rocktop;
+        }
+    }
+    this.hitBottom = function() {
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.y > rockbottom) {
+            this.y = rockbottom;
+        }
+    }
+    this.hitLeft = function() {
+        var rockleft = 0;
+        if (this.x < rockleft) {
+            this.x = rockleft;
+        }
+    }
+    this.hitRight = function() {
+        var rockright = myGameArea.canvas.width - this.width;
+        if (this.x > rockright) {
+            this.x = rockright;
+        }
+    }
     this.collectCoin = function(otherobj) {
     var myleft = this.x;
     var myright = this.x + (this.width);
